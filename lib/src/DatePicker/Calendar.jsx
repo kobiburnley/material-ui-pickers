@@ -28,6 +28,7 @@ export class Calendar extends Component {
     shouldDisableDate: PropTypes.func,
     utils: PropTypes.object.isRequired,
     allowKeyboardControl: PropTypes.bool,
+    onMonthChange: PropTypes.func,
   };
 
   static defaultProps = {
@@ -40,6 +41,7 @@ export class Calendar extends Component {
     renderDay: undefined,
     allowKeyboardControl: false,
     shouldDisableDate: () => false,
+    onMonthChange: null,
   };
 
   state = {
@@ -85,7 +87,10 @@ export class Calendar extends Component {
   };
 
   handleChangeMonth = (newMonth) => {
-    this.setState({ currentMonth: newMonth });
+    this.setState({ currentMonth: newMonth }, () => {
+      const { onMonthChange } = this.props;
+      onMonthChange && onMonthChange(this.state.currentMonth);
+    });
   };
 
   validateMinMaxDate = (day) => {

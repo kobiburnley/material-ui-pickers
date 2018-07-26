@@ -25,6 +25,7 @@ export interface CalendarProps {
     renderDay?: RenderDay;
     utils?: Utils<MaterialUiPickersDate>;
     shouldDisableDate?: (day: MaterialUiPickersDate) => boolean;
+    onMonthChange?: (date: MaterialUiPickersDate) => void;
 }
 
 declare const Calendar: ComponentClass<CalendarProps>;
