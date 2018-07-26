@@ -41,7 +41,7 @@ export class Calendar extends Component {
     renderDay: undefined,
     allowKeyboardControl: false,
     shouldDisableDate: () => false,
-    onMonthChange: null
+    onMonthChange: null,
   };
 
   state = {
