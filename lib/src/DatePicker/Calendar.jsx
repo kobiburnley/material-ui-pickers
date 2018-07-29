@@ -1,15 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import withStyles from '@material-ui/core/styles/withStyles';
-
-import EventListener from 'react-event-listener';
 import keycode from 'keycode';
-import CalendarHeader from './CalendarHeader';
-import DomainPropTypes from '../constants/prop-types';
-import DayWrapper from './DayWrapper';
-import Day from './Day';
-import withUtils from '../_shared/WithUtils';
+import withStyles from '@material-ui/core/styles/withStyles';
+import EventListener from 'react-event-listener';
+import throttle from 'lodash.throttle';
+
 import { findClosestEnabledDate } from '../_helpers/date-utils';
+import CalendarHeader from './CalendarHeader';
+import Day from './Day';
+import DayWrapper from './DayWrapper';
+import DomainPropTypes from '../constants/prop-types';
+import SlideTransition from './SlideTransition';
+import withUtils from '../_shared/WithUtils';
 
 /* eslint-disable no-unused-expressions */
 export class Calendar extends Component {
@@ -47,6 +49,7 @@ export class Calendar extends Component {
   };
 
   state = {
+    slideDirection: 'left',
     currentMonth: this.props.utils.getStartOfMonth(this.props.date),
   };
 
@@ -81,19 +84,19 @@ export class Calendar extends Component {
 
   onDateSelect = (day, isFinish = true) => {
     const { date, utils } = this.props;
-
-    const withHours = utils.setHours(day, utils.getHours(date));
-    const withMinutes = utils.setMinutes(withHours, utils.getMinutes(date));
+    this.props.onChange(utils.mergeDateAndTime(day, date), isFinish);
+  };
 
     this.props.onChange(withMinutes, isFinish);
   };
 
-  handleChangeMonth = (newMonth) => {
-    this.setState({ currentMonth: newMonth }, () => {
+  handleChangeMonth = (newMonth, slideDirection) => {
+    this.setState({ currentMonth: newMonth, slideDirection }, () => {
       const { onMonthChange } = this.props;
       onMonthChange && onMonthChange(this.state.currentMonth);
     });
   };
+  throttledHandleChangeMonth = throttle(this.handleChangeMonth, 350)
 
   validateMinMaxDate = (day) => {
     const { minDate, maxDate, utils } = this.props;
@@ -230,9 +233,10 @@ export class Calendar extends Component {
   };
 
   renderHeader() {
-    const { renderHeader, utils } = this.props;
+    const { renderHeader, utils, slideDirection } = this.props;
     const { currentMonth } = this.state;
     let headerComponent = (<CalendarHeader
+      slideDirection={slideDirection}
       currentMonth={currentMonth}
       onMonthChange={this.handleChangeMonth}
       leftArrowIcon={this.props.leftArrowIcon}
@@ -261,20 +265,26 @@ export class Calendar extends Component {
 
         {this.renderHeader()}
 
-        <div
-          autoFocus /* eslint-disable-line */ // Autofocus required for getting work keyboard navigation feature
-          className={classes.calendar}
+        <SlideTransition
+          slideDirection={slideDirection}
+          className={classes.transitionContainer}
         >
-          {this.renderWeeks()}
-        </div>
+          <div
+            /* eslint-disable-next-line */
+            autoFocus // Autofocus required for getting work keyboard navigation feature
+            key={currentMonth}
+          >
+            {this.renderWeeks()}
+          </div>
+        </SlideTransition>
       </Fragment>
     );
   }
 }
 
 const styles = theme => ({
-  calendar: {
-    height: 36 * 6,
+  transitionContainer: {
+    minHeight: 36 * 6,
     marginTop: theme.spacing.unit * 1.5,
   },
   week: {
