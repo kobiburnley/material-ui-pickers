@@ -87,9 +87,6 @@ export class Calendar extends Component {
     this.props.onChange(utils.mergeDateAndTime(day, date), isFinish);
   };
 
-    this.props.onChange(withMinutes, isFinish);
-  };
-
   handleChangeMonth = (newMonth, slideDirection) => {
     this.setState({ currentMonth: newMonth, slideDirection }, () => {
       const { onMonthChange } = this.props;
@@ -233,12 +230,13 @@ export class Calendar extends Component {
   };
 
   renderHeader() {
-    const { renderHeader, utils, slideDirection } = this.props;
-    const { currentMonth } = this.state;
+    const { currentMonth, slideDirection } = this.state;
+    const { utils, renderHeader } = this.props;
+
     let headerComponent = (<CalendarHeader
       slideDirection={slideDirection}
       currentMonth={currentMonth}
-      onMonthChange={this.handleChangeMonth}
+      onMonthChange={this.throttledHandleChangeMonth}
       leftArrowIcon={this.props.leftArrowIcon}
       rightArrowIcon={this.props.rightArrowIcon}
       disablePrevMonth={this.shouldDisablePrevMonth()}
@@ -254,6 +252,7 @@ export class Calendar extends Component {
   }
 
   render() {
+    const { currentMonth, slideDirection } = this.state;
     const { classes, allowKeyboardControl } = this.props;
 
     return (
