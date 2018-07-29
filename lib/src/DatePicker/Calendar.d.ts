@@ -3,6 +3,7 @@ import { IconButtonProps } from '@material-ui/core/IconButton';
 import { DateType } from '../constants/prop-types';
 import { Utils } from '../typings/utils';
 import { MaterialUiPickersDate } from '../typings/date'
+import {CalendarHeaderProps} from "./CalendarHeader"
 
 export type DayComponent = ReactElement<IconButtonProps>;
 
@@ -11,6 +12,11 @@ export type RenderDay = (
     selectedDate: MaterialUiPickersDate,
     dayInCurrentMonth: boolean,
     dayComponent: DayComponent,
+) => ReactNode;
+
+export type RenderHeader = (
+  headerComponent: ReactElement<CalendarHeaderProps>,
+  props: CalendarProps,
 ) => ReactNode;
 
 export interface CalendarProps {
@@ -26,6 +32,7 @@ export interface CalendarProps {
     utils?: Utils<MaterialUiPickersDate>;
     shouldDisableDate?: (day: MaterialUiPickersDate) => boolean;
     onMonthChange?: (date: MaterialUiPickersDate) => void;
+    renderHeader?: RenderHeader;
 }
 
 declare const Calendar: ComponentClass<CalendarProps>;

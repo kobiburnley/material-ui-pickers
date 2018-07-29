@@ -29,6 +29,7 @@ export class Calendar extends Component {
     utils: PropTypes.object.isRequired,
     allowKeyboardControl: PropTypes.bool,
     onMonthChange: PropTypes.func,
+    renderHeader: PropTypes.func,
   };
 
   static defaultProps = {
@@ -41,7 +42,8 @@ export class Calendar extends Component {
     renderDay: undefined,
     allowKeyboardControl: false,
     shouldDisableDate: () => false,
-    onMonthChange: null,
+    onMonthChange: undefined,
+    renderHeader: undefined,
   };
 
   state = {
@@ -227,9 +229,28 @@ export class Calendar extends Component {
     });
   };
 
-  render() {
+  renderHeader() {
+    const { renderHeader, utils } = this.props;
     const { currentMonth } = this.state;
-    const { classes, utils, allowKeyboardControl } = this.props;
+    let headerComponent = (<CalendarHeader
+      currentMonth={currentMonth}
+      onMonthChange={this.handleChangeMonth}
+      leftArrowIcon={this.props.leftArrowIcon}
+      rightArrowIcon={this.props.rightArrowIcon}
+      disablePrevMonth={this.shouldDisablePrevMonth()}
+      disableNextMonth={this.shouldDisableNextMonth()}
+      utils={utils}
+    />);
+
+    if (renderHeader) {
+      headerComponent = renderHeader(headerComponent, this.props);
+    }
+
+    return headerComponent;
+  }
+
+  render() {
+    const { classes, allowKeyboardControl } = this.props;
 
     return (
       <Fragment>
@@ -238,15 +259,7 @@ export class Calendar extends Component {
           <EventListener target="window" onKeyDown={this.handleKeyDown} />
         }
 
-        <CalendarHeader
-          currentMonth={currentMonth}
-          onMonthChange={this.handleChangeMonth}
-          leftArrowIcon={this.props.leftArrowIcon}
-          rightArrowIcon={this.props.rightArrowIcon}
-          disablePrevMonth={this.shouldDisablePrevMonth()}
-          disableNextMonth={this.shouldDisableNextMonth()}
-          utils={utils}
-        />
+        {this.renderHeader()}
 
         <div
           autoFocus /* eslint-disable-line */ // Autofocus required for getting work keyboard navigation feature
