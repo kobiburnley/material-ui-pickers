@@ -230,13 +230,13 @@ export class Calendar extends Component {
   };
 
   renderHeader() {
-    const { renderHeader, utils } = this.props;
-    const { slideDirection } = this.state;
-    const { currentMonth } = this.state;
+    const { currentMonth, slideDirection } = this.state;
+    const { utils, renderHeader } = this.props;
+
     let headerComponent = (<CalendarHeader
       slideDirection={slideDirection}
       currentMonth={currentMonth}
-      onMonthChange={this.handleChangeMonth}
+      onMonthChange={this.throttledHandleChangeMonth}
       leftArrowIcon={this.props.leftArrowIcon}
       rightArrowIcon={this.props.rightArrowIcon}
       disablePrevMonth={this.shouldDisablePrevMonth()}
@@ -252,8 +252,8 @@ export class Calendar extends Component {
   }
 
   render() {
-    const { classes, allowKeyboardControl } = this.props;
     const { currentMonth, slideDirection } = this.state;
+    const { classes, allowKeyboardControl } = this.props;
 
     return (
       <Fragment>
