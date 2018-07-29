@@ -58,6 +58,7 @@ export class Calendar extends Component {
       return {
         lastDate: nextProps.date,
         currentMonth: nextProps.utils.getStartOfMonth(nextProps.date),
+        slideDirection: nextProps.utils.isAfter(nextProps.date, state.lastDate) ? 'left' : 'right',
       };
     }
 
