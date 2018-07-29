@@ -56,6 +56,7 @@ export class Calendar extends Component {
   static getDerivedStateFromProps(nextProps, state) {
     if (!nextProps.utils.isEqual(nextProps.date, state.lastDate)) {
       return {
+        slideDirection: nextProps.utils.isAfter(nextProps.date, state.lastDate) ? 'left' : 'right',
         lastDate: nextProps.date,
         currentMonth: nextProps.utils.getStartOfMonth(nextProps.date),
       };
@@ -87,13 +88,14 @@ export class Calendar extends Component {
     this.props.onChange(utils.mergeDateAndTime(day, date), isFinish);
   };
 
-  handleChangeMonth = (newMonth, slideDirection) => {
+  handleChangeMonth = async (newMonth, slideDirection) => {
     this.setState({ currentMonth: newMonth, slideDirection }, () => {
       const { onMonthChange } = this.props;
       onMonthChange && onMonthChange(this.state.currentMonth);
     });
   };
-  throttledHandleChangeMonth = throttle(this.handleChangeMonth, 350)
+
+  throttledHandleChangeMonth = throttle(this.handleChangeMonth, 600)
 
   validateMinMaxDate = (day) => {
     const { minDate, maxDate, utils } = this.props;
