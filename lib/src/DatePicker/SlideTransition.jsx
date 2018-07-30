@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-const animationDuration = 350;
+const animationDuration = 300;
 
 const SlideTransition = ({
   classes, className, children, slideDirection, ...other

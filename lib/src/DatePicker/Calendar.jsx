@@ -58,6 +58,7 @@ export class Calendar extends Component {
       return {
         lastDate: nextProps.date,
         currentMonth: nextProps.utils.getStartOfMonth(nextProps.date),
+        slideDirection: nextProps.utils.isAfter(nextProps.date, state.lastDate) ? 'left' : 'right',
       };
     }
 
@@ -93,7 +94,7 @@ export class Calendar extends Component {
       onMonthChange && onMonthChange(this.state.currentMonth);
     });
   };
-  throttledHandleChangeMonth = throttle(this.handleChangeMonth, 350)
+  throttledHandleChangeMonth = throttle(this.handleChangeMonth, 600)
 
   validateMinMaxDate = (day) => {
     const { minDate, maxDate, utils } = this.props;
