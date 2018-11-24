@@ -77,6 +77,7 @@
     "postrelease": "npm run build && npm publish build",
     "lint": "eslint ./src/**/*.js*",
     "lint-fix": "npm run lint -- --fix",
+    "publish-local": "npm publish build --@revdesk:registry=http://localhost:4873 --force",
     "postinstall": "node -e \"console.log('\\u001b[35m\\u001b[1mHave you installed one of peer libraries?\\u001b[22m\\u001b[39m\\n > date-fns \\n > luxon \\n > moment')\""
   },
   "devDependencies": {
