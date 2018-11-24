@@ -1,16 +1,15 @@
-import React, { Component, Fragment } from 'react';
+import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import keycode from 'keycode';
 import withStyles from '@material-ui/core/styles/withStyles';
 import EventListener from 'react-event-listener';
 import throttle from 'lodash.throttle';
 
-import { findClosestEnabledDate } from '../_helpers/date-utils';
+import {findClosestEnabledDate} from '../_helpers/date-utils';
 import CalendarHeader from './CalendarHeader';
 import Day from './Day';
 import DayWrapper from './DayWrapper';
 import DomainPropTypes from '../constants/prop-types';
-import SlideTransition from './SlideTransition';
 import withUtils from '../_shared/WithUtils';
 
 /* eslint-disable no-unused-expressions */
@@ -253,8 +252,8 @@ export class Calendar extends Component {
   }
 
   render() {
-    const { currentMonth, slideDirection } = this.state;
-    const { classes, allowKeyboardControl } = this.props;
+    const { currentMonth } = this.state;
+    const { allowKeyboardControl } = this.props;
 
     return (
       <Fragment>
@@ -265,18 +264,13 @@ export class Calendar extends Component {
 
         {this.renderHeader()}
 
-        <SlideTransition
-          slideDirection={slideDirection}
-          className={classes.transitionContainer}
+        <div
+          /* eslint-disable-next-line */
+          autoFocus // Autofocus required for getting work keyboard navigation feature
+          key={currentMonth}
         >
-          <div
-            /* eslint-disable-next-line */
-            autoFocus // Autofocus required for getting work keyboard navigation feature
-            key={currentMonth}
-          >
-            {this.renderWeeks()}
-          </div>
-        </SlideTransition>
+          {this.renderWeeks()}
+        </div>
       </Fragment>
     );
   }
