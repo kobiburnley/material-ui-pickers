@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import keycode from 'keycode';
 import withStyles from '@material-ui/core/styles/withStyles';
 import EventListener from 'react-event-listener';
-import throttle from 'lodash.throttle';
 
 import {findClosestEnabledDate} from '../_helpers/date-utils';
 import CalendarHeader from './CalendarHeader';
@@ -93,7 +92,7 @@ export class Calendar extends Component {
       onMonthChange && onMonthChange(this.state.currentMonth);
     });
   };
-  throttledHandleChangeMonth = throttle(this.handleChangeMonth, 600)
+  throttledHandleChangeMonth = this.handleChangeMont
 
   validateMinMaxDate = (day) => {
     const { minDate, maxDate, utils } = this.props;

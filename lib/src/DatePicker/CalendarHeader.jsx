@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
 import withUtils from '../_shared/WithUtils';
-import SlideTransition from './SlideTransition';
 
 export const CalendarHeader = ({
   classes,
@@ -17,7 +16,6 @@ export const CalendarHeader = ({
   disablePrevMonth,
   disableNextMonth,
   utils,
-  slideDirection,
 }) => {
   const rtl = theme.direction === 'rtl';
 
@@ -35,18 +33,13 @@ export const CalendarHeader = ({
           <Icon>{rtl ? rightArrowIcon : leftArrowIcon}</Icon>
         </IconButton>
 
-        <SlideTransition
-          slideDirection={slideDirection}
-          className={classes.transitionContainer}
+        <Typography
+          key={utils.getCalendarHeaderText(currentMonth)}
+          align="center"
+          variant="body1"
         >
-          <Typography
-            key={utils.getCalendarHeaderText(currentMonth)}
-            align="center"
-            variant="body1"
-          >
-            {utils.getCalendarHeaderText(currentMonth)}
-          </Typography>
-        </SlideTransition>
+          {utils.getCalendarHeaderText(currentMonth)}
+        </Typography>
 
         <IconButton
           disabled={disableNextMonth}
@@ -84,7 +77,6 @@ CalendarHeader.propTypes = {
   disablePrevMonth: PropTypes.bool,
   disableNextMonth: PropTypes.bool,
   utils: PropTypes.object.isRequired,
-  slideDirection: PropTypes.oneOf(['right', 'left']).isRequired,
 };
 
 CalendarHeader.defaultProps = {
