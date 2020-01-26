@@ -92,7 +92,7 @@ export class Calendar extends Component {
       onMonthChange && onMonthChange(this.state.currentMonth);
     });
   };
-  throttledHandleChangeMonth = this.handleChangeMont
+  throttledHandleChangeMonth = this.handleChangeMonth
 
   validateMinMaxDate = (day) => {
     const { minDate, maxDate, utils } = this.props;
